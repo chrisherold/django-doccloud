@@ -30,7 +30,7 @@ def put_file(file, title, access_level):
 def rm_file(id):
     try:
         get_dc_file(id).delete()
-    except Exception as e: 
+    except Exception as e:
         return False
 
 class DocumentCloudProperties(models.Model):
@@ -62,7 +62,7 @@ class DocumentCloudProperties(models.Model):
 
     def delete(self, *args, **kwargs):
         #no effective way of dealing with errors on DC cloud side
-        #unless we create a custom template for managing documents 
+        #unless we create a custom template for managing documents
         rm_file(self.dc_id)
         #so if rm_file don't complete we orphan the dc cloud doc
         super(DocumentCloudProperties, self).delete(*args, **kwargs)
@@ -114,3 +114,6 @@ class Document(models.Model):
     def link(self):
         return '<a href="%s" target="_blank">%s</a>' %\
          (self.get_absolute_url(), "link")
+    
+    def embed_html(self):
+        return u'<div id="viewer-{0}"></div><script src="http://s3.documentcloud.org/viewer/loader.js"></script>\n<script> DV.load("https://www.documentcloud.org/documents/{0}.js", {{ container : "#viewer-{0}", showSidebar: false }});</script>'.format(self.dc_properties.dc_id)
