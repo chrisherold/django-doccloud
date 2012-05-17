@@ -8,17 +8,19 @@
 <script type="text/javascript" src="{{ jsi18nurl|default:"../../../jsi18n/" }}"></script>
 {{ media }}
 <style type="text/css" media="screen">
+    #content {
+        min-width: 960px;
+    }
     .documentcloud_embed {
         display:block;
         position: relative;
         float: right;
-        width: 48%;
-        height: 800px;
+        width: 580px;
+        height: 780px;
         background-color: #bfbfbf;
     }
-    #document_form {
-        float: left;
-        width: 50%;
+    #content-main > form {
+        width: 644px;
     }
 </style>
 {% endblock %}
@@ -52,7 +54,7 @@
 {% endif %}{% endif %}
 {% endblock %}
 <div class="documentcloud_embed">
-    {{ original.embed_html|safe }}
+    {% include "doccloud/_documentcloud_embed.html" with document=original width=580 height=780 %}
 </div>
 <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.module_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
 <div>

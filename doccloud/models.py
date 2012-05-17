@@ -114,6 +114,3 @@ class Document(models.Model):
     def link(self):
         return '<a href="%s" target="_blank">%s</a>' %\
          (self.get_absolute_url(), "link")
-    
-    def embed_html(self):
-        return u'<div id="viewer-{0}"></div><script src="http://s3.documentcloud.org/viewer/loader.js"></script>\n<script> DV.load("https://www.documentcloud.org/documents/{0}.js", {{ container : "#viewer-{0}", showSidebar: false }});</script>'.format(self.dc_properties.dc_id)

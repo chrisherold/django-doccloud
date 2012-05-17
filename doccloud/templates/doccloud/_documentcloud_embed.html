@@ -1,0 +1,12 @@
+<div id="viewer-{{ document.dc_properties.dc_id }}"></div>
+<script src="http://s3.documentcloud.org/viewer/loader.js"></script>
+<script>
+    DV.load("https://www.documentcloud.org/documents/{{ document.dc_properties.dc_id }}.js", 
+        { 
+            width: {{ width|default:400 }},
+            height: {{ height|default:575 }},
+            zoom: '{{ zoom|default:"auto" }}',
+            container : "#viewer-{{ document.dc_properties.dc_id }}",
+            showSidebar: false
+        });
+</script>
