@@ -53,7 +53,7 @@ class DocumentCloudProperties(models.Model):
     def update_access(self, access):
         if self.dc_id == None and self.dc_url == None:
             return False #obj not set yet
-        try: 
+        try:
             dc_obj = get_dc_file(self.dc_id)
             dc_obj.access = access
             dc_obj.save()
@@ -79,7 +79,7 @@ class Document(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     created_at = CreationDateTimeField(db_index=True)
-    updated_at = models.DateTimeField(editable=False, blank=True, db_index=True)
+    updated_at = models.DateTimeField(editable=False, auto_now=True, blank=True, db_index=True)
     dc_properties = models.ForeignKey(DocumentCloudProperties, blank=True, null=True)
     access_level = models.CharField(max_length=32, choices=PRIVACY_LVLS)
 
@@ -106,10 +106,6 @@ class Document(models.Model):
         if self.dc_properties != None:
             return #document didn't delete, admin view error msgs?
         super(Document, self).delete(*args, **kwargs)
-
-    def save(self, *args, **kwargs):
-        self.updated_at = datetime.now()
-        super(Document, self).save(*args, **kwargs)
 
     def link(self):
         return '<a href="%s" target="_blank">%s</a>' %\
