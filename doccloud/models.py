@@ -23,8 +23,8 @@ def get_dc_file(id):
 
 def put_file(file, title, access_level):
     t_client = get_client()
-    dc_obj = t_client.documents.upload(pdf=file, title=title,\
-     access=access_level, secure=True)
+    dc_obj = t_client.documents.upload(pdf=file, title=title, access=access_level, secure=True)
+    file.seek(0)
     return (dc_obj.id, dc_obj.canonical_url)
 
 def rm_file(id):
