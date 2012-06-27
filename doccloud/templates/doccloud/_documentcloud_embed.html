@@ -1,3 +1,4 @@
+{% if document.dc_properties.dc_id %}
 <div id="viewer-{{ document.dc_properties.dc_id }}"></div>
 <script src="http://s3.documentcloud.org/viewer/loader.js"></script>
 <script>
@@ -10,3 +11,6 @@
             showSidebar: false
         });
 </script>
+{% else %}
+<!-- No documentcloud document to embed -->
+{% endif %}
