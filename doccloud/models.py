@@ -93,9 +93,11 @@ class DocumentCloudProperties(models.Model):
             return False  # taking suggestions on handling mgmt issues n admin
 
     def delete(self, *args, **kwargs):
+        delete_upstream = kwargs.get('delete_upstream', False)
         #no effective way of dealing with errors on DC cloud side
         #unless we create a custom template for managing documents
-        rm_file(self.dc_id)
+        if delete_upstream:
+            rm_file(self.dc_id)
         #so if rm_file don't complete we orphan the dc cloud doc
         super(DocumentCloudProperties, self).delete(*args, **kwargs)
 
@@ -162,7 +164,9 @@ class Document(models.Model):
         self.dc_properties = dc_props
 
     def delete(self, *args, **kwargs):
-        self.dc_properties.delete()
+        """Override standard delete with additional option 'delete_upstream' to determine whether to remove the file from documentcloud. Default is False (don't remove from DocumentCloud)"""
+        delete_upstream = kwargs.get('delete_upstream', False)
+        self.dc_properties.delete(delete_upstream=delete_upstream)
         if self.dc_properties is not None:
             return False  # document didn't delete, admin view error msgs?
         super(Document, self).delete(*args, **kwargs)
