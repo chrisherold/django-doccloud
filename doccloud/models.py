@@ -166,7 +166,8 @@ class Document(models.Model):
     def delete(self, *args, **kwargs):
         """Override standard delete with additional option 'delete_upstream' to determine whether to remove the file from documentcloud. Default is False (don't remove from DocumentCloud)"""
         delete_upstream = kwargs.get('delete_upstream', False)
-        self.dc_properties.delete(delete_upstream=delete_upstream)
+        if self.dc_properties:
+            self.dc_properties.delete(delete_upstream=delete_upstream)
         if self.dc_properties is not None:
             return False  # document didn't delete, admin view error msgs?
         super(Document, self).delete(*args, **kwargs)
