@@ -116,7 +116,7 @@ class Document(models.Model):
     created_at = CreationDateTimeField(db_index=True)
     updated_at = models.DateTimeField(editable=False, auto_now=True, blank=True, db_index=True)
     dc_properties = models.ForeignKey(DocumentCloudProperties, blank=True, null=True)
-    access_level = models.CharField(max_length=32, choices=PRIVACY_LVLS)
+    access_level = models.CharField(max_length=32, choices=PRIVACY_LVLS, default=PRIVACY_LVLS[0][0])
 
     class Meta:
         verbose_name_plural = 'Documents'

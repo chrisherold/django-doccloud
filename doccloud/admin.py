@@ -2,11 +2,13 @@ from django.db import models
 from django.conf import settings
 from django.contrib import admin
 from documentcloud.MultipartPostHandler import getsize
-from doccloud.models import *
+from doccloud.models import Document
 
 
 class DocumentAdmin(admin.ModelAdmin):
     exclude = ('user', 'dc_properties', )
+    list_display = ('title', 'user', 'access_level')
+    list_filter = ('access_level', 'user')
 
     def save_model(self, request, obj, form, change):
         if len(form.files) > 0 and obj.updated_at == None:
