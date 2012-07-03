@@ -93,7 +93,7 @@ class DocumentCloudProperties(models.Model):
             return False  # taking suggestions on handling mgmt issues n admin
 
     def delete(self, *args, **kwargs):
-        delete_upstream = kwargs.get('delete_upstream', False)
+        delete_upstream = kwargs.pop('delete_upstream', False)
         #no effective way of dealing with errors on DC cloud side
         #unless we create a custom template for managing documents
         if delete_upstream:
@@ -165,7 +165,7 @@ class Document(models.Model):
 
     def delete(self, *args, **kwargs):
         """Override standard delete with additional option 'delete_upstream' to determine whether to remove the file from documentcloud. Default is False (don't remove from DocumentCloud)"""
-        delete_upstream = kwargs.get('delete_upstream', False)
+        delete_upstream = kwargs.pop('delete_upstream', False)
         if self.dc_properties:
             self.dc_properties.delete(delete_upstream=delete_upstream)
         if self.dc_properties is not None:
