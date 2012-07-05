@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.db import models
-from datetime import datetime
 from documentcloud import DocumentCloud
 from django_extensions.db.fields import AutoSlugField, CreationDateTimeField
 
@@ -11,6 +9,8 @@ PRIVACY_LVLS = (
     ('public', 'Public (viewable by anyone)'),
     ('organization', 'Organization (viewable by users in your organization)')
 )
+
+DOCUMENTCLOUD_PROJECT_ID = getattr(settings, 'DOCUMENTCLOUD_PROJECT_ID', None)
 
 
 def get_client():
@@ -25,12 +25,16 @@ def get_dc_file(id):
 
 def put_file(file, title, access_level, **kwargs):
     t_client = get_client()
-    dc_obj = t_client.documents.upload(pdf=file,
-                                       title=title,
-                                       access=access_level,
-                                       description=kwargs.get('description', None),
-                                       project=kwargs.get('project', None),
-                                       secure=True)
+    upload_args = {
+        'pdf': file,
+        'title': title,
+        'access': access_level,
+        'description': kwargs.get('description', None),
+        'secure': True
+    }
+    if DOCUMENTCLOUD_PROJECT_ID:
+        upload_args['project'] = str(DOCUMENTCLOUD_PROJECT_ID)
+    dc_obj = t_client.documents.upload(**upload_args)
     file.seek(0)
     return (dc_obj.id, dc_obj.canonical_url)
 

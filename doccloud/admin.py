@@ -7,7 +7,7 @@ from doccloud.models import Document
 
 class DocumentAdmin(admin.ModelAdmin):
     exclude = ('user', 'dc_properties', )
-    list_display = ('title', 'user', 'access_level')
+    list_display = ('title', 'user', 'access_level', 'updated_at', 'created_at')
     list_filter = ('access_level', 'user')
 
     def save_model(self, request, obj, form, change):
