@@ -48,7 +48,7 @@ def rm_file(id):
 
 class DocumentCloudProperties(models.Model):
     dc_id = models.CharField(max_length=300, blank=False, null=False)
-    dc_url = models.URLField(verify_exists=False, max_length=200, null=False, blank=False)
+    dc_url = models.URLField(max_length=200, null=False, blank=False)
 
     updatable_properties = ('title', 'source', 'description',
                             'related_article', 'published_url', 'access', 'data')
